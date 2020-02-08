@@ -3,8 +3,12 @@ package com.sideprojects.coup;
 public class Main {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+		Deck myDeck = new Deck();
+		
+		for (Card card : myDeck.getListOfCards()) {
+			System.out.println(card);
+		}
+		
 	}
 
 }

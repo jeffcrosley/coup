@@ -22,4 +22,10 @@ public class Card {
 		this.isFaceDown = !this.isFaceDown;
 	}
 	
+	@Override
+	public String toString() {
+		String myselfAsString = this.suit;
+		return myselfAsString;
+	}
+	
 }
