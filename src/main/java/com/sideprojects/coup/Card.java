@@ -6,7 +6,11 @@ public class Card {
 	private boolean isFaceDown = this.isFaceDown;
 
 	public String getSuit() {
-		return this.suit;
+		if (!this.isFaceDown) {
+			return this.suit;
+		} else {
+			return "This card is not public";
+		}
 	}
 	
 	public boolean isFaceDown() {
@@ -18,7 +22,7 @@ public class Card {
 		this.isFaceDown = true;
 	}
 	
-	private void flip() {
+	private void Flip() {
 		this.isFaceDown = !this.isFaceDown;
 	}
 	

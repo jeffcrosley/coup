@@ -6,11 +6,7 @@ import java.util.Collections;
 
 public class Deck {
 	
-	private List<Card> listOfCards = new ArrayList<Card>();
-	
-	public List<Card> getListOfCards() {
-		return listOfCards;
-	}
+	public List<Card> listOfCards = new ArrayList<Card>();
 	
 	public Deck() {
 		listOfCards = this.BuildDeck();
@@ -32,7 +28,7 @@ public class Deck {
 	
 	@Override
 	public String toString() {
-		String myselfAsString = "Deck [listOfCards=" + listOfCards + "]";
+		String myselfAsString = "Curret Deck = " + listOfCards;
 		return myselfAsString;
 	}
 }
