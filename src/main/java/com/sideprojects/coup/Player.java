@@ -2,6 +2,8 @@ package com.sideprojects.coup;
 
 public class Player {
 	
+	
+	/*
 	private String name = this.name;
 	private Hand hand = this.hand;
 	private int numberOfCoins = this.numberOfCoins;
@@ -84,4 +86,5 @@ public class Player {
 	public void Challenge() {
 		
 	}
+	*/
 }

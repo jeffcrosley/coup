@@ -1,7 +1,13 @@
 package com.sideprojects.coup;
 
 public class Card {
+	private String suit = this.suit;
+	private boolean isFaceDown = this.isFaceDown;
 	
+	
+	
+	
+	/*
 	private String suit = this.suit;
 	private boolean isFaceDown = this.isFaceDown;
 
@@ -31,5 +37,5 @@ public class Card {
 		String myselfAsString = this.suit;
 		return myselfAsString;
 	}
-	
+	*/
 }

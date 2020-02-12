@@ -3,6 +3,10 @@ package com.sideprojects.coup;
 public class Main {
 
 	public static void main(String[] args) {
+		
+		
+		
+		/*
 		Deck myDeck = new Deck();
 		
 		for (Card card : myDeck.listOfCards) {
@@ -24,6 +28,7 @@ public class Main {
 		myPlayer.DukeTax();		
 		myPlayer.CaptainSteal(theirPlayer);
 		System.out.println(myDeck);
+		*/
 	}
 
 }
