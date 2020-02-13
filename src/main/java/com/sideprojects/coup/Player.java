@@ -1,7 +1,39 @@
 package com.sideprojects.coup;
 
 public class Player {
+	 
+	private String name;
+	private Card card1;
+	private Card card2;
+	private boolean isTurn;
 	
+	public String getName() {
+		return name;
+	}
+	
+	public Card getCard1() {
+		return card1;
+	}
+	public Card getCard2() {
+		return card2;
+	}
+	
+	public boolean isTurn() {
+		return isTurn;
+	}
+	
+	public Player(String name, Card card1, Card card2) {
+		this.name = name;
+		this.card1 = card1;
+		this.card2 = card2;
+	}
+	
+	@Override
+	public String toString() {
+		String card1 = this.card1.getSuit();
+		String card2 = this.card2.getSuit();
+		return card1 + " " + card2;
+	}
 	
 	/*
 	private String name = this.name;

@@ -1,26 +1,20 @@
 package com.sideprojects.coup;
 
 public class Card {
-	private String suit = this.suit;
-	private boolean isFaceDown = this.isFaceDown;
 	
+	private String suit;
+	private boolean isFaceDown;
 	
-	
-	
-	/*
-	private String suit = this.suit;
-	private boolean isFaceDown = this.isFaceDown;
-
 	public String getSuit() {
-		if (!this.isFaceDown) {
-			return this.suit;
+		if (this.isFaceDown()) {
+			return "Unknown";
 		} else {
-			return "This card is not public";
+			return suit;	
 		}
 	}
 	
 	public boolean isFaceDown() {
-		return this.isFaceDown;
+		return isFaceDown;
 	}
 	
 	public Card(String suit) {
@@ -28,14 +22,16 @@ public class Card {
 		this.isFaceDown = true;
 	}
 	
-	private void Flip() {
+	public void flipOver() {
 		this.isFaceDown = !this.isFaceDown;
 	}
 	
 	@Override
 	public String toString() {
-		String myselfAsString = this.suit;
-		return myselfAsString;
+		if (isFaceDown) {
+			return "Unknown";
+		} else {
+			return suit;
+		}
 	}
-	*/
 }
