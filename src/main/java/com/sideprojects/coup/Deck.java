@@ -9,6 +9,10 @@ public class Deck {
 
 	private List<Card> cardsInDeck;
 	
+	public List<Card> getCardsInDeck() {
+		return cardsInDeck;
+	}
+
 	public Deck() {
 		this.cardsInDeck = new ArrayList<Card>();
 		
@@ -24,7 +28,6 @@ public class Deck {
 	public void shuffle() {
 		Collections.shuffle(cardsInDeck);
 	}
-	
 	public Card deal() {
 		return cardsInDeck.remove(0);
 	}

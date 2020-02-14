@@ -6,11 +6,7 @@ public class Card {
 	private boolean isFaceDown;
 	
 	public String getSuit() {
-		if (this.isFaceDown()) {
-			return "Unknown";
-		} else {
-			return suit;	
-		}
+		return suit;
 	}
 	
 	public boolean isFaceDown() {

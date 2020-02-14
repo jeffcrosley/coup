@@ -9,23 +9,64 @@ public class Coup {
 	public static void main(String[] args) {
 		
 		// CREATE THE DECK
+		Deck deck = buildDeck();
+		
+		// GET NUMBER OF PLAYERS AND NAMES FROM USER AND CREATE PLAYERS
+		List<Player> players = createPlayers();
+				
+		// DEAL TWO CARDS TO EACH PLAYER
+		dealCards(players, deck);
+		
+		// MAIN GAME LOOP
+		boolean game = true;
+		while (game = true) {
+			
+			
+			
+			
+			
+			
+			game = false;
+		}
+		
+		
+	}
+	
+	
+	public static Deck buildDeck() {
 		Deck deck = new Deck();
-		
-		// SHUFFLE THE DECK
 		deck.shuffle();
+		return deck;
+	}
+	
+	public static List<Player> createPlayers() {
 		
-		// DETERMINE NUMBER OF PLAYERS AND INSTANTIATE WITH TOP CARDS FROM DECK
+		List<Player> players = new ArrayList<Player>();
+		
 		Scanner input = new Scanner(System.in);
 		System.out.println("Welcome to Coup!  How many are playing? (2-4 players): ");
 		int numberOfPlayers = Integer.parseInt(input.nextLine());
 		
-		List<Player> players = new ArrayList<Player>();
 		for (int i = 0; i < numberOfPlayers; i++) {
-			Card card1 = deck.deal();
-			Card card2 = deck.deal();			
-			players.add(new Player("player", card1, card2));
+			System.out.println("Player " + (i + 1) + ", what is your name?:");
+			String name = input.nextLine();
+			players.add(new Player(name));
 		}
-
+		
 		input.close();
+		return players;
 	}
+
+	public static void dealCards(List<Player> players, Deck deck) {
+		
+		for (Player player : players) {
+			player.setCard1(deck.deal());
+			player.setCard2(deck.deal());
+		}
+		
+	}
+
+
+
+
 }
