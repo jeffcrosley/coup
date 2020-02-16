@@ -9,8 +9,12 @@ public class Card {
 		return suit;
 	}
 	
-	public boolean isFaceDown() {
-		return isFaceDown;
+	public String isFaceDown() {
+		if (isFaceDown == true) {
+			return "(Face Down)";
+		} else {
+			return "(Face Up)";
+		}
 	}
 	
 	public Card(String suit) {
@@ -24,10 +28,6 @@ public class Card {
 	
 	@Override
 	public String toString() {
-		if (isFaceDown) {
-			return "Unknown";
-		} else {
-			return suit;
-		}
+		return suit;
 	}
 }
