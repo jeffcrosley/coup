@@ -6,32 +6,40 @@ import java.util.Collections;
 import java.util.List;
 
 public class Deck {
-
+	
+	// PRIVATE MEMBERS
 	private List<Card> cardsInDeck;
 	
+	// GETS AND SETS
 	public List<Card> getCardsInDeck() {
 		return cardsInDeck;
 	}
 
+	// CTOR
 	public Deck() {
 		this.cardsInDeck = new ArrayList<Card>();
-		
+	}
+	
+	// PUBLIC METHODS
+		// TESTED
+	public void shuffle() {
+		Collections.shuffle(getCardsInDeck());
+	}
+		// TESTED
+	public Card deal() {
+		return cardsInDeck.remove(0);
+	}
+		// TESTED
+	public void buildDeck() {
 		List<String> suits = new ArrayList<String>(Arrays.asList("Duke", "Captain", "Assassin", "Contessa", "Ambassador"));
-		
 		for (String suit : suits) {
 			for (int i = 0; i < 3; i++) {
-				cardsInDeck.add(new Card(suit));
+				getCardsInDeck().add(new Card(suit));
 			}
 		}
 	}
 	
-	public void shuffle() {
-		Collections.shuffle(cardsInDeck);
-	}
-	public Card deal() {
-		return cardsInDeck.remove(0);
-	}
-	
+	// STRING OVERRIDE
 	@Override
 	public String toString() {
 		String output = "";
@@ -41,5 +49,4 @@ public class Deck {
 		return output;
 		
 	}
-
 }

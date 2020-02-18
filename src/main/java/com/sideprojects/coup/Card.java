@@ -2,28 +2,29 @@ package com.sideprojects.coup;
 
 public class Card {
 	
+	// PRIVATE MEMBERS
 	private String suit;
 	private boolean isFaceDown;
 	
+	// GETS AND SETS
 	public String getSuit() {
 		return suit;
 	}
 	
-	public String isFaceDown() {
-		if (isFaceDown == true) {
-			return "(Face Down)";
-		} else {
-			return "(Face Up)";
-		}
+	public boolean isFaceDown() {
+		return isFaceDown;
 	}
 	
+	// CTOR
 	public Card(String suit) {
 		this.suit = suit;
 		this.isFaceDown = true;
 	}
 	
+	// PUBLIC METHODS
+		// TESTED
 	public void flipOver() {
-		this.isFaceDown = !this.isFaceDown;
+		isFaceDown = !isFaceDown;
 	}
 	
 	@Override
