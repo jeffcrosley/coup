@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Coup {
-
+	/*
 	public static void main(String[] args) {
-		
+	
 		// CREATE INPUT SCANNER
 		Scanner input = new Scanner(System.in);		
 		// CREATE THE DECK AND DISCARD
@@ -99,7 +99,8 @@ public class Coup {
 		// TODO DECLARE WHETHER USER WON OR LOST (MAKE SURE THIS SQUARES WITH THE "ROTATE ACTIVE PLAYER" BEHAVIOR ABOVE)
 		System.out.println("Game Over!");
 	}
-	
+
+
 	public static void adjudicateChallenge(Player activePlayer, Player challengingPlayer, String action, Scanner input) {
 		if (challengingPlayer != null) {
 			
@@ -318,6 +319,6 @@ public class Coup {
 	}
 	
 
-
+*/
 	
 }

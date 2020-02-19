@@ -15,32 +15,42 @@ public class PlayerTests {
 	Deck deck = new Deck();
 	
 	@Test
-	public void takeIncome() {
+	public void take_income_increments_coins() {
 		player1.takeIncome();
-		Assert.assertEquals("Income should increase coins by 1", 3, player1.getCoins());
+		Assert.assertEquals(3, player1.getCoins());
 	}
 	
 	@Test
-	public void takeForeignAid() {
+	public void take_foreign_aid_increases_coins_by_2() {
 		player1.takeForeignAid();
-		Assert.assertEquals("Foreign Aid should increase coins by 2", 4, player1.getCoins());
+		Assert.assertEquals(4, player1.getCoins());
 	}
 	
 	@Test
-	public void taxAsDuke() {
-		player1.taxAsDuke();
-		Assert.assertEquals("Tax should increase coins by 3", 5, player1.getCoins());
+	public void taxing_increases_coins_by_3() {
+		player1.tax();
+		Assert.assertEquals(5,  player1.getCoins());
 	}
-
+	
 	@Test
-	public void stealAsCaptain() {
-		player1.stealAsCaptain(player2);
-		Assert.assertEquals("P1 should have 2 more coins", 4, player1.getCoins());
-		Assert.assertEquals("P2 should have 2 fewer coins", 0, player2.getCoins());
+	public void stealing_transfers_2_coins_between_players() {
+		player1.steal(player2);
+		Assert.assertEquals(4, player1.getCoins());
+		Assert.assertEquals(0,  player2.getCoins());
 	}
-
+	
 	@Test
-	public void determineAvailableCardsForExchange() {
+	public void killing_flips_a_targets_card() {
+		player1.setCard1(new Card("Duke"));
+		player1.setCard2(new Card("Ambassador"));
+		player2.setCard1(new Card("Assassin"));
+		player2.setCard2(new Card("Contessa"));
 		
+		player1.killCard1(player2);
+		player2.killCard2(player1);
+		Assert.assertTrue("Card should be facedown", player1.getCard1().isFaceDown());
+		Assert.assertTrue("Card should be faceup", !player1.getCard2().isFaceDown());
+		Assert.assertTrue("Card should be faceup", !player2.getCard1().isFaceDown());
+		Assert.assertTrue("Card should be facedown", player2.getCard2().isFaceDown());
 	}
 }
