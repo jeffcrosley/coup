@@ -1,5 +1,8 @@
 package com.sideprojects.coup;
 
+import java.util.List;
+import java.util.Scanner;
+
 public class Player {
 	 
 	// PRIVATE MEMBERS
@@ -129,6 +132,42 @@ public class Player {
 		output[output.length - 1] = deck.deal();
 		
 		return output;
+	}
+	
+	public void loseCard(Scanner input) {
+		System.out.println(getName() + " has been hit!  Pick a card to lose:");
+
+		System.out.println(CLI.separator);
+		
+		if (getCard1().isFaceDown()) {
+			System.out.println("(1) " + getCard1());
+		}
+		
+		if (getCard2().isFaceDown()) {
+			System.out.println("(2) " + getCard2());
+		}
+		
+		System.out.println(CLI.separator);
+		
+		String selectedCard = input.nextLine();
+		
+		if (selectedCard.equals("1")) {
+			System.out.println(getName() + " has revealed " + getCard1() + "!");
+			getCard1().flipOver();
+		}
+		
+		if (selectedCard.equals("2")) {
+			System.out.println(getName() + " has revealed " + getCard2() + "!");
+			getCard2().flipOver();
+		}
+		
+		System.out.println(CLI.separator);
+		
+		if (!getCard1().isFaceDown() && !getCard2().isFaceDown()) {
+			setAlive(false);
+			System.out.println(getName() + " has been eliminated!");
+			System.out.println(CLI.separator);
+		}
 	}
 	
 	// OVERRIDES

@@ -9,7 +9,7 @@ public class Coup {
 	public Coup() {}
 
 	public static void main(String[] args) {
-		// SCANNERS AND RESOURCES
+		// CREATE SCANNERS/RESOURCES
 		Scanner input = new Scanner(System.in);
 		
 		// CREATE DRAW AND DISCARD DECKS AND SHUFFLE
@@ -30,21 +30,28 @@ public class Coup {
 		// MAIN GAME LOOP
 		boolean exit = false;
 		do {
+			
 			// SET CURRENT PLAYER
 			Player currentPlayer = setCurrentPlayer(players);
+			
 			// DISPLAY GAME STATUS AND AVAILABLE ACTIONS
 			CLI.gameStatus(currentPlayer, players);
 			CLI.availableActions();
+			
 			// GET ACTION AND TARGET
 			String currentAction = input.nextLine();
-			// TODO GET TARGET
-			Player targetPlayer = CLI.getTarget(players, input);
+			Player targetPlayer = CLI.getTarget(players, currentAction, input);
 			System.out.println("Target: " + targetPlayer);
+			
 			// SOLICIT CHALLENGES
-			// TODO FIX THIS TO APPLY ONLY TO RELEVANT ACTIONS
 			Player challengingPlayer = CLI.solicitChallenges(currentPlayer, currentAction, players, input);
-			System.out.println("Challenging Player: " + challengingPlayer);
-			// TODO RESOLVE CHALLENGES
+			System.out.println(CLI.separator);
+			
+			// RESOLVE ACTION CHALLENGES
+			// TODO DRAW NEW CARD IF CHALLENGE FAILS
+			if (challengingPlayer != null) {
+				CLI.resolveActionChallenge(currentPlayer, challengingPlayer, currentAction, input);
+			}
 			
 			// TODO SOLICIT BLOCK
 			
@@ -52,19 +59,20 @@ public class Coup {
 			
 			// TODO RESOLVE CHALLENGES
 			
-			// TODO RESOLVE ACTION/BLOCK
-			
-			// TODO DISPLAY ANY PLAYER ELIMINATIONS
+			// TODO RESOLVE ACTION/BLOCK			
 			
 			// CHECK FOR GAME END
 			exit = checkForGameEnd(players);
-			// TODO ROTATE PLAYER
 			
-		} while (exit);//exit == false);
+			// ROTATE PLAYER
+			rotatePlayers(players, currentPlayer);
+			
+		} while (exit == false);
 		
-		// TODO CHECK FOR WINNING PLAYER AND DISPLAY
+		// ANNOUNCE THE WINNER
+		announceWinner(players);
 		
-		System.out.println("Game over!");
+		// CLOSE INPUT SCANNER
 		input.close();
 	}
 	
@@ -107,5 +115,29 @@ public class Coup {
 			exit = true;
 		}
 		return exit;
+	}
+
+	public static void rotatePlayers(List<Player> players, Player currentPlayer) {
+		players.get(0).setTurn(true);
+
+		int currentPlayerIndex = players.indexOf(currentPlayer);
+		
+		for (Player player : players) {
+			if (player.isAlive() && players.indexOf(player) > currentPlayerIndex) {
+				players.get(0).setTurn(false);
+				player.setTurn(true);
+				break;
+			}			
+		}
+		
+		currentPlayer.setTurn(false);	
+	}
+
+	public static void announceWinner(List<Player> players) {
+		for (Player player : players) {
+			if (player.isAlive()) {
+				System.out.println(player + " is the winner!");
+			}
+		}
 	}
 }

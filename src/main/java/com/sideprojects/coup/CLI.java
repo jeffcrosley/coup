@@ -5,34 +5,46 @@ import java.util.Scanner;
 
 public class CLI {
 	
+	// PUBLIC VARIABLES
 	static String separator = "--------------------";
 	static String[] actions = new String[] {
-			"(1) INCOME - Take 1 coin (can't be challenged",
-			"(2) FOREIGN AID - Take 2 coins (blockable by DUKE, can't be challenged",
+			"(1) INCOME - Take 1 coin (can't be challenged)",
+			"(2) FOREIGN AID - Take 2 coins (blockable by DUKE, can't be challenged)",
 			"(3) TAX as DUKE - Take 3 coins",
-			"(4) STEAL as CAPTAIN - Take 2 coins from another player (blockable by CAPTAIN or AMBASSADOR",
-			"(5) ASSASSINATE as ASSASSIN - Pay 3 coins, choose player to lose a card (blockable by CONTESSA",
-			"(6) EXCHANGE as AMBASSADOR - Take 2 cards, discard 2 cards"
+			"(4) STEAL as CAPTAIN - Take 2 coins from another player (blockable by CAPTAIN or AMBASSADOR)",
+			"(5) ASSASSINATE as ASSASSIN - Pay 3 coins, choose player to lose a card (blockable by CONTESSA)",
+			"(6) EXCHANGE as AMBASSADOR - Take 2 cards, discard 2 cards",
+			"(7) COUP - Pay 7 coins, choose player to lose a card (unblockable, can't be challenged)"
 	};
 	
+	// CTR
 	public CLI() {}
 
+	// PUBLIC METHODS
 	public static void welcomeToCoupHowManyPlayers() {
 		System.out.println("Welcome to Coup!  How many are playing? (2-6 players): ");
 	}
 	
 	public static void gameStatus(Player currentPlayer, List<Player> players) {
-		System.out.println(currentPlayer.getName() + ", it's your turn.");
 		System.out.println(separator + "CURRENT GAME STATUS" + separator);
+		System.out.println(currentPlayer.getName() + ", it's your turn.");
 		// SHOW PLAYER CARDS AND COINS
 		System.out.println("Your Cards and Coins:");
-		System.out.println(currentPlayer.getCard1());
-		System.out.println(currentPlayer.getCard2());
+		String card1Status = "";
+		if (!currentPlayer.getCard1().isFaceDown()) {
+			card1Status = " (REVEALED)";
+		}
+		String card2Status = "";
+		if (!currentPlayer.getCard2().isFaceDown()) {
+			card2Status = " (REVEALED)";
+		}
+		System.out.println(currentPlayer.getCard1() + card1Status);
+		System.out.println(currentPlayer.getCard2() + card2Status);
 		System.out.println(currentPlayer.getCoins() + " coins");
 		System.out.println(separator);
 		// SHOW OPPONENT CARDS
 		for (Player player : players) {
-			if (!player.isTurn()) {
+			if (!player.isTurn() && player.isAlive()) {
 				System.out.println(player.getName());
 				if (player.getCard1().isFaceDown()) {
 					System.out.println("UNKNOWN");
@@ -58,42 +70,78 @@ public class CLI {
 		System.out.println(separator);
 	}
 
-	public static Player getTarget(List<Player> players, Scanner input) {
+	public static Player getTarget(List<Player> players, String currentAction, Scanner input) {
 		Player targetPlayer = null;
 		
-		System.out.println("Select your target:");
-		for (Player player : players) {
-			if (player.isAlive() && !player.isTurn()) {				
-				System.out.println(player);				
-			}		
-		}	
-		System.out.println(separator);
-		
-		String target = input.nextLine();
-		
-		for (Player player : players) {
-			if (target.equals(String.valueOf(players.indexOf(player) + 1))) {
-				targetPlayer = player;
+		if (currentAction.equals("4") || currentAction.equals("5") || currentAction.equals("7")) {
+			System.out.println("Select your target:");
+			for (Player player : players) {
+				if (player.isAlive() && !player.isTurn()) {				
+					System.out.println(player);				
+				}		
+			}	
+			System.out.println(separator);
+			
+			String target = input.nextLine();
+			
+			for (Player player : players) {
+				if (target.equals(String.valueOf(players.indexOf(player) + 1))) {
+					targetPlayer = player;
+				}
 			}
-		}
+		}		
 					
 		return targetPlayer;
 	}
 	
 	public static Player solicitChallenges(Player currentPlayer, String currentAction, List<Player> players, Scanner input) {
 		Player challengingPlayer = null;
-		System.out.println(currentPlayer + " has chosen " + currentAction);
-		for (Player player : players) {
-			if (player.isAlive() && !player.isTurn()) {
-				System.out.println(player + ", do you challenge? (Y/N)");
-				String challenge = input.nextLine();
-				if (challenge.equals("Y")) {
-					challengingPlayer = player;
-				}
-			}			
-		}		
+		System.out.println(currentPlayer + " has chosen " + actions[Integer.parseInt(currentAction) - 1]);
+		
+		if (currentAction.equals("3") || currentAction.equals("4") || currentAction.equals("5") || currentAction.equals("6")) {
+			for (Player player : players) {
+				if (player.isAlive() && !player.isTurn()) {
+					System.out.println(separator);
+					System.out.println(player + ", do you challenge? (Y/N)");
+					System.out.println(separator);
+					String challenge = input.nextLine();
+					if (challenge.toUpperCase().equals("Y")) {
+						challengingPlayer = player;
+						break;
+					}
+				}			
+			}	
+		}
+			
 		return challengingPlayer;
 	}
 
+	public static void resolveActionChallenge(Player currentPlayer, Player challengingPlayer, String currentAction, Scanner input) {
+		Player losingPlayer = null;
+		
+		if (identifyAssertedActionCard(currentAction).equals(currentPlayer.getCard1().getSuit()) || identifyAssertedActionCard(currentAction).equals(currentPlayer.getCard2().getSuit())) {
+			losingPlayer = challengingPlayer;
+		} else {
+			losingPlayer = currentPlayer;
+		}
+		
+		losingPlayer.loseCard(input);
+	}
 
+	// PRIVATE METHODS
+	private static String identifyAssertedActionCard(String currentAction) {
+		String assertedCard = "";
+		
+		if (currentAction.equals("3")) {
+			assertedCard = "DUKE";
+		} else if (currentAction.equals("4")) {
+			assertedCard = "CAPTAIN";
+		} else if (currentAction.equals("5")) {
+			assertedCard = "ASSASSIN";
+		} else if (currentAction.equals("6")) {
+			assertedCard = "AMBASSADOR";
+		}
+		
+		return assertedCard;
+	}
 }
