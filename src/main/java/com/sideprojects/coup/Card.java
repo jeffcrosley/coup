@@ -33,7 +33,7 @@ public class Card {
 	// OVERRIDES
 	@Override
 	public String toString() {
-		return suit;
+			return suit;
 	}
 	
 	@Override

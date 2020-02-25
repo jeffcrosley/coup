@@ -19,24 +19,31 @@ public class Coup {
 		drawDeck.shuffle();
 
 		// DISPLAY WELCOME MESSAGE, GET NUMBER OF PLAYERS, INSTANTIATE, AND DEAL CARDS TO PLAYERS
-		Display.welcomeToCoupHowManyPlayers();
+		CLI.welcomeToCoupHowManyPlayers();
 		int numberOfPlayers = Integer.parseInt(input.nextLine());
 		List<Player> players = createPlayers(numberOfPlayers);
 		initialDeal(drawDeck, players);
 		
 		// SET PLAYER 1 AS ACTIVE
-		players.get(1).setTurn(true);
+		players.get(0).setTurn(true);
 		
 		// MAIN GAME LOOP
 		boolean exit = false;
 		do {
-			
-			// TODO DISPLAY GAME STATUS
-			
-			// TODO GET ACTION/TARGET
-			
-			// TODO SOLICIT CHALLENGES
-			
+			// SET CURRENT PLAYER
+			Player currentPlayer = setCurrentPlayer(players);
+			// DISPLAY GAME STATUS AND AVAILABLE ACTIONS
+			CLI.gameStatus(currentPlayer, players);
+			CLI.availableActions();
+			// GET ACTION AND TARGET
+			String currentAction = input.nextLine();
+			// TODO GET TARGET
+			Player targetPlayer = CLI.getTarget(players, input);
+			System.out.println("Target: " + targetPlayer);
+			// SOLICIT CHALLENGES
+			// TODO FIX THIS TO APPLY ONLY TO RELEVANT ACTIONS
+			Player challengingPlayer = CLI.solicitChallenges(currentPlayer, currentAction, players, input);
+			System.out.println("Challenging Player: " + challengingPlayer);
 			// TODO RESOLVE CHALLENGES
 			
 			// TODO SOLICIT BLOCK
@@ -49,12 +56,15 @@ public class Coup {
 			
 			// TODO DISPLAY ANY PLAYER ELIMINATIONS
 			
-			// TODO CHECK FOR GAME END
-			
+			// CHECK FOR GAME END
+			exit = checkForGameEnd(players);
 			// TODO ROTATE PLAYER
 			
-		} while (exit = false);
+		} while (exit);//exit == false);
 		
+		// TODO CHECK FOR WINNING PLAYER AND DISPLAY
+		
+		System.out.println("Game over!");
 		input.close();
 	}
 	
@@ -71,5 +81,31 @@ public class Coup {
 			player.setCard1(drawDeck.deal());
 			player.setCard2(drawDeck.deal());
 		}
+	}
+	
+	public static Player setCurrentPlayer(List<Player> players) {
+		Player currentPlayer = null;
+		for (Player player : players) {
+			if (player.isTurn()) {
+				currentPlayer = player;
+			}
+		}
+		return currentPlayer;
+	}
+	
+	public static boolean checkForGameEnd(List<Player> players) {
+		boolean exit;
+		int alivePlayers = 0;
+		for (Player player : players) {
+			if (player.isAlive()) {
+				alivePlayers++;
+			}
+		}
+		if (alivePlayers > 1) {
+			exit = false;
+		} else {
+			exit = true;
+		}
+		return exit;
 	}
 }

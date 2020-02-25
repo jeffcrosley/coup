@@ -31,7 +31,7 @@ public class Deck {
 	}
 		// TESTED
 	public void buildDeck() {
-		List<String> suits = new ArrayList<String>(Arrays.asList("Duke", "Captain", "Assassin", "Contessa", "Ambassador"));
+		List<String> suits = new ArrayList<String>(Arrays.asList("DUKE", "CAPTAIN", "ASSASSIN", "CONTESSA", "AMBASSADOR"));
 		for (String suit : suits) {
 			for (int i = 0; i < 3; i++) {
 				getCardsInDeck().add(new Card(suit));
