@@ -39,25 +39,39 @@ public class Coup {
 			CLI.availableActions();
 			
 			// GET ACTION AND TARGET
+			// TODO CREATE AN ADJUDICATOR CLASS THAT HANDLES ACTION REFERENCE AND METHODS INSTEAD OF DOING IT IN THE PLAYER CLASS
 			String currentAction = input.nextLine();
 			Player targetPlayer = CLI.getTarget(players, currentAction, input);
-			System.out.println("Target: " + targetPlayer);
 			
 			// SOLICIT CHALLENGES
-			Player challengingPlayer = CLI.solicitChallenges(currentPlayer, currentAction, players, input);
-			System.out.println(CLI.separator);
+			Player challengingPlayer = null;
+			if (currentAction.equals("3") || currentAction.equals("4") || currentAction.equals("5") || currentAction.equals("6")) {
+				challengingPlayer = CLI.solicitChallenges(currentPlayer, currentAction, players, input);
+				System.out.println(CLI.separator);
+			}			
 			
 			// RESOLVE ACTION CHALLENGES
-			// TODO DRAW NEW CARD IF CHALLENGE FAILS
 			if (challengingPlayer != null) {
-				CLI.resolveActionChallenge(currentPlayer, challengingPlayer, currentAction, input);
+				// TODO END TURN IF ACTIVE PLAYER WAS SUCCESSFULLY CHALLENGED
+				CLI.resolveActionChallenge(currentPlayer, challengingPlayer, currentAction, drawDeck, discardDeck, input);
 			}
 			
-			// TODO SOLICIT BLOCK
+			// SOLICIT BLOCK
+			Player blockingPlayer = null;
+			if (currentAction.equals("2") || currentAction.equals("4") || currentAction.contentEquals("5")) {
+				blockingPlayer = CLI.solicitBlocks(currentPlayer, currentAction, players, input);
+			}
 			
-			// TODO SOLICIT CHALLENGES TO BLOCK
+			// SOLICIT CHALLENGES TO BLOCK
+			Player blockChallengingPlayer = null;
+			if (blockingPlayer != null) {
+				// TODO FIX THIS SO YOU CAN BLOCK A STEAL WITH CAPTAIN **OR** AMBASSADOR
+				String blockingAction = CLI.determineBlockingAction(currentAction, input);
+				blockChallengingPlayer = CLI.solicitBlockChallenges(blockingPlayer, blockingAction, players, input);
+			}
 			
 			// TODO RESOLVE CHALLENGES
+			
 			
 			// TODO RESOLVE ACTION/BLOCK			
 			

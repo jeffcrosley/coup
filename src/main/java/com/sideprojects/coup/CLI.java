@@ -97,37 +97,110 @@ public class CLI {
 	public static Player solicitChallenges(Player currentPlayer, String currentAction, List<Player> players, Scanner input) {
 		Player challengingPlayer = null;
 		System.out.println(currentPlayer + " has chosen " + actions[Integer.parseInt(currentAction) - 1]);
-		
-		if (currentAction.equals("3") || currentAction.equals("4") || currentAction.equals("5") || currentAction.equals("6")) {
-			for (Player player : players) {
-				if (player.isAlive() && !player.isTurn()) {
-					System.out.println(separator);
-					System.out.println(player + ", do you challenge? (Y/N)");
-					System.out.println(separator);
-					String challenge = input.nextLine();
-					if (challenge.toUpperCase().equals("Y")) {
-						challengingPlayer = player;
-						break;
-					}
-				}			
-			}	
-		}
+
+		for (Player player : players) {
+			if (player.isAlive() && !player.isTurn()) {
+				System.out.println(separator);
+				System.out.println(player + ", do you challenge? (Y/N)");
+				System.out.println(separator);
+				String challenge = input.nextLine();
+				if (challenge.toUpperCase().equals("Y")) {
+					challengingPlayer = player;
+					break;
+				}
+			}			
+		}	
 			
 		return challengingPlayer;
 	}
 
-	public static void resolveActionChallenge(Player currentPlayer, Player challengingPlayer, String currentAction, Scanner input) {
+	public static void resolveActionChallenge(Player currentPlayer, Player challengingPlayer, String currentAction, Deck drawDeck, Deck discardDeck, Scanner input) {
 		Player losingPlayer = null;
 		
 		if (identifyAssertedActionCard(currentAction).equals(currentPlayer.getCard1().getSuit()) || identifyAssertedActionCard(currentAction).equals(currentPlayer.getCard2().getSuit())) {
 			losingPlayer = challengingPlayer;
+			System.out.println(currentPlayer + " has drawn a new card.");
+			Card discardedCard = null;
+			if (identifyAssertedActionCard(currentAction).equals(currentPlayer.getCard1().getSuit())) {
+				System.out.println("Challenge failed!");
+				discardDeck.getCardsInDeck().add(discardedCard);
+				currentPlayer.setCard1(drawDeck.deal());
+			} else {
+				System.out.println("Challenge failed!");
+				discardDeck.getCardsInDeck().add(discardedCard);
+				currentPlayer.setCard2(drawDeck.deal());
+			}
+			
+			
 		} else {
+			System.out.println("Challenge successful!");
 			losingPlayer = currentPlayer;
 		}
 		
 		losingPlayer.loseCard(input);
 	}
 
+	public static Player solicitBlocks(Player currentPlayer, String currentAction, List<Player> players, Scanner input) {
+		Player blockChallengingPlayer = null;
+		System.out.println(currentPlayer + " has chosen " + actions[Integer.parseInt(currentAction) - 1]);
+		
+		for (Player player : players) {
+			if (player.isAlive() && !player.isTurn()) {
+				System.out.println(separator);
+				System.out.println(player + ", do you block? (Y/N)");
+				System.out.println(separator);
+				String block = input.nextLine();
+				if (block.toUpperCase().equals("Y")) {
+					blockChallengingPlayer = player;
+					break;
+				}
+			}			
+		}	
+			
+		return blockChallengingPlayer;
+	}
+	
+	public static String determineBlockingAction(String currentAction, Scanner input) {
+		String blockingAction = "";
+		
+		if (currentAction.equals("2")) {
+			blockingAction = "DUKE";
+		} else if (currentAction.equals("4")) {
+			System.out.println("Block as (1) CAPTAIN or (2) AMBASSADOR?");
+			String selection = input.nextLine();
+			if (selection.equals("CAPTAIN")) {
+				blockingAction = "CAPTAIN";
+			} else {
+				blockingAction = "AMBASSADOR";
+			}
+			
+		} else if (currentAction.equals("5") ) {
+			blockingAction = "CONTESSA";
+		}
+		
+		return blockingAction;
+	}
+	
+	public static Player solicitBlockChallenges(Player blockingPlayer, String blockingAction, List<Player> players, Scanner input) {
+		Player blockChallengingPlayer = null;
+		System.out.println(blockingPlayer + " has chosen to block as " + blockingAction);
+
+		for (Player player : players) {
+			if (player.isAlive() && !player.getName().equals(blockingPlayer.getName())) {
+				System.out.println(separator);
+				System.out.println(player + ", do you challenge? (Y/N)");
+				System.out.println(separator);
+				String challenge = input.nextLine();
+				if (challenge.toUpperCase().equals("Y")) {
+					blockChallengingPlayer = player;
+					break;
+				}
+			}			
+		}	
+			
+		return blockChallengingPlayer;
+	}
+	
 	// PRIVATE METHODS
 	private static String identifyAssertedActionCard(String currentAction) {
 		String assertedCard = "";
