@@ -39,9 +39,9 @@ public class Coup {
 			CLI.availableActions();
 			
 			// GET ACTION AND TARGET
-			// TODO CREATE AN ADJUDICATOR CLASS THAT HANDLES ACTION REFERENCE AND METHODS INSTEAD OF DOING IT IN THE PLAYER CLASS
 			String currentAction = input.nextLine();
 			Player targetPlayer = CLI.getTarget(players, currentAction, input);
+			boolean actionActive = true;
 			
 			// SOLICIT CHALLENGES
 			Player challengingPlayer = null;
@@ -52,28 +52,37 @@ public class Coup {
 			
 			// RESOLVE ACTION CHALLENGES
 			if (challengingPlayer != null) {
-				// TODO END TURN IF ACTIVE PLAYER WAS SUCCESSFULLY CHALLENGED
-				CLI.resolveActionChallenge(currentPlayer, challengingPlayer, currentAction, drawDeck, discardDeck, input);
+				actionActive = CLI.resolveChallenge(currentPlayer, challengingPlayer, currentAction, drawDeck, discardDeck, input);
 			}
 			
 			// SOLICIT BLOCK
 			Player blockingPlayer = null;
-			if (currentAction.equals("2") || currentAction.equals("4") || currentAction.contentEquals("5")) {
-				blockingPlayer = CLI.solicitBlocks(currentPlayer, currentAction, players, input);
+			boolean blockActive = true;
+			if ((currentAction.equals("2") || currentAction.equals("4") || currentAction.contentEquals("5")) && actionActive) {
+				blockingPlayer = CLI.solicitBlock(currentPlayer, currentAction, targetPlayer, input);
 			}
 			
 			// SOLICIT CHALLENGES TO BLOCK
 			Player blockChallengingPlayer = null;
+			String blockingAction = "";
 			if (blockingPlayer != null) {
-				// TODO FIX THIS SO YOU CAN BLOCK A STEAL WITH CAPTAIN **OR** AMBASSADOR
-				String blockingAction = CLI.determineBlockingAction(currentAction, input);
+				blockingAction = CLI.determineBlockingAction(currentAction, input);
 				blockChallengingPlayer = CLI.solicitBlockChallenges(blockingPlayer, blockingAction, players, input);
 			}
 			
-			// TODO RESOLVE CHALLENGES
+			// RESOLVE BLOCK CHALLENGES
+			// TODO THIS DIDN'T WORK WHEN A DUKE BLOCKING FOREIGN AID WAS CHALLENGED (CHALLENGE SHOULD HAVE FAILED)
+			if (blockChallengingPlayer != null) {
+				blockActive = CLI.resolveChallenge(blockingPlayer, blockChallengingPlayer, blockingAction, drawDeck, discardDeck, input);
+			}
 			
-			
-			// TODO RESOLVE ACTION/BLOCK			
+			// RESOLVE ACTION/BLOCK IF STILL RELEVANT
+			// TODO FIX AMBASSADOR METHOD
+			if (currentPlayer.isAlive() && actionActive && !blockActive && (targetPlayer != null && targetPlayer.isAlive())) {
+				currentPlayer.takeAction(currentAction, targetPlayer, drawDeck, input);
+			} else {
+				// DO NOTHING
+			}
 			
 			// CHECK FOR GAME END
 			exit = checkForGameEnd(players);

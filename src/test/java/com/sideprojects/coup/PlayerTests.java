@@ -27,14 +27,6 @@ public class PlayerTests {
 	}
 	
 	@Test
-	public void blocking_foreing_aid_takes_2_coins_from_target() {
-		player2.takeForeignAid();
-		player1.blockForeignAid(player2);
-		
-		Assert.assertEquals(2, player2.getCoins());
-	}
-	
-	@Test
 	public void taxing_increases_coins_by_3() {
 		player1.tax();
 		Assert.assertEquals(5,  player1.getCoins());
@@ -45,94 +37,6 @@ public class PlayerTests {
 		player1.steal(player2);
 		Assert.assertEquals(4, player1.getCoins());
 		Assert.assertEquals(0,  player2.getCoins());
-	}
-	
-	@Test
-	public void blocking_stealing_reverts_theft() {
-		player1.steal(player2);
-		player2.blockSteal(player1);
-		
-		Assert.assertEquals(2, player1.getCoins());
-		Assert.assertEquals(2, player2.getCoins());
-	}
-	
-	@Test
-	public void assassinating_subtracts_3_coins() {
-		player1.setCard1(new Card("Duke"));
-		player1.setCard2(new Card("Ambassador"));
-		player2.setCard1(new Card("Assassin"));
-		player2.setCard2(new Card("Contessa"));
-		player1.setCoins(8);
-		player2.setCoins(5);
-		
-		player1.assassinateCard(player2.getCard1());
-		player2.assassinateCard(player1.getCard2());
-		
-		Assert.assertEquals("Assassinating should cost 3 coins", 5, player1.getCoins());
-		Assert.assertEquals("Assassinating should cost 3 coins", 2, player2.getCoins());
-	}
-	
-	@Test
-	public void assassinating_flips_a_targets_card() {
-		player1.setCard1(new Card("Duke"));
-		player1.setCard2(new Card("Ambassador"));
-		player2.setCard1(new Card("Assassin"));
-		player2.setCard2(new Card("Contessa"));
-		
-		player1.assassinateCard(player2.getCard1());
-		player2.assassinateCard(player1.getCard2());
-		Assert.assertTrue("Card should be facedown", player1.getCard1().isFaceDown());
-		Assert.assertTrue("Card should be faceup", !player1.getCard2().isFaceDown());
-		Assert.assertTrue("Card should be faceup", !player2.getCard1().isFaceDown());
-		Assert.assertTrue("Card should be facedown", player2.getCard2().isFaceDown());
-	}
-	
-	@Test
-	public void blocking_assassination_reverts_a_flipped_card() {
-		player1.setCard1(new Card("Duke"));
-		player1.setCard2(new Card("Ambassador"));
-		player2.setCard1(new Card("Assassin"));
-		player2.setCard2(new Card("Contessa"));
-		
-		player1.assassinateCard(player2.getCard1());
-		player2.assassinateCard(player1.getCard2());
-		
-		player1.blockAssassinateCard(player1.getCard2());
-		player2.blockAssassinateCard(player2.getCard1());
-		
-		Assert.assertTrue("Card should be facedown", player1.getCard2().isFaceDown());
-		Assert.assertTrue("Card should be facedown", player2.getCard1().isFaceDown());
-	}
-	
-	@Test
-	public void coup_subtracts_7_coins() {
-		player1.setCard1(new Card("Duke"));
-		player1.setCard2(new Card("Ambassador"));
-		player2.setCard1(new Card("Assassin"));
-		player2.setCard2(new Card("Contessa"));
-		player1.setCoins(7);
-		player2.setCoins(9);
-		
-		player1.coupCard(player2.getCard1());
-		player2.coupCard(player1.getCard2());
-		
-		Assert.assertEquals("Coup should cost 7 coins", 0, player1.getCoins());
-		Assert.assertEquals("Coup should cost 7 coins", 2, player2.getCoins());
-	}
-	
-	@Test
-	public void coup_flips_a_targets_card() {
-		player1.setCard1(new Card("Duke"));
-		player1.setCard2(new Card("Ambassador"));
-		player2.setCard1(new Card("Assassin"));
-		player2.setCard2(new Card("Contessa"));
-		
-		player1.coupCard(player2.getCard1());
-		player2.coupCard(player1.getCard2());
-		Assert.assertTrue("Card should be facedown", player1.getCard1().isFaceDown());
-		Assert.assertTrue("Card should be faceup", !player1.getCard2().isFaceDown());
-		Assert.assertTrue("Card should be faceup", !player2.getCard1().isFaceDown());
-		Assert.assertTrue("Card should be facedown", player2.getCard2().isFaceDown());
 	}
 	
 	@Test

@@ -1,6 +1,5 @@
 package com.sideprojects.coup;
 
-import java.util.List;
 import java.util.Scanner;
 
 public class Player {
@@ -70,69 +69,6 @@ public class Player {
 	}	
 
 	// PUBLIC METHODS
-	public void takeIncome() {
-		setCoins(getCoins() + 1);
-	}
-	
-	public void takeForeignAid() {
-		setCoins(getCoins() + 2);
-	}
-	
-	public void blockForeignAid(Player target) {
-		target.setCoins(target.getCoins() - 2);
-	}
-	
-	public void tax() {
-		setCoins(getCoins() + 3);
-	}
-	
-	public void steal(Player target) {
-		this.setCoins(this.getCoins() + 2);
-		target.setCoins(target.getCoins() - 2);
-	}
-	
-	public void blockSteal(Player target) {
-		this.setCoins(this.getCoins() + 2);
-		target.setCoins(target.getCoins() - 2);
-	}
-	
-	public void assassinateCard(Card card) {
-		setCoins(getCoins() - 3);
-		card.flipOver();
-	}
-	
-	public void blockAssassinateCard(Card card) {
-		card.flipOver();
-	}
-	
-	public void coupCard(Card card) {
-		setCoins(getCoins() - 7);
-		card.flipOver();
-	}
-	
-	public Card[] getCardsForExchange(Deck deck) {
-		Card[] output = null;
-		
-		if (getCard1().isFaceDown() && getCard2().isFaceDown()) {
-			output = new Card[4];
-		} else {
-			output = new Card[3];
-		}
-		
-		if (getCard1().isFaceDown()) {
-			output[0] = getCard1();
-			if (getCard2().isFaceDown() ) {
-				output[1] = getCard2();
-			}
-		} else {
-			output[0] = getCard2();
-		}
-		
-		output[output.length - 2] = deck.deal();
-		output[output.length - 1] = deck.deal();
-		
-		return output;
-	}
 	
 	public void loseCard(Scanner input) {
 		System.out.println(getName() + " has been hit!  Pick a card to lose:");
@@ -168,6 +104,81 @@ public class Player {
 			System.out.println(getName() + " has been eliminated!");
 			System.out.println(CLI.separator);
 		}
+	}
+
+	public void takeAction(String currentAction, Player targetPlayer, Deck drawDeck, Scanner input) {
+		if (currentAction.equals("1")) {
+			takeIncome();
+		} else if (currentAction.equals("2")) {
+			takeForeignAid();
+		} else if (currentAction.equals("3")) {
+			tax();
+		} else if (currentAction.equals("4")) {
+			steal(targetPlayer);
+		} else if (currentAction.equals("5")) {
+			assassinate(targetPlayer, input);
+		} else if (currentAction.equals("6")) {
+			exchangeCards(getCardsForExchange(drawDeck));
+		} else if (currentAction.equals("7")) {
+			coup(targetPlayer, input);
+		}
+	}
+	
+	// PRIVATE METHODS
+	void takeIncome() {
+		setCoins(getCoins() + 1);
+	}
+	
+	void takeForeignAid() {
+		setCoins(getCoins() + 2);
+	}
+	
+	void tax() {
+		setCoins(getCoins() + 3);
+	}
+	
+	void steal(Player target) {
+		this.setCoins(this.getCoins() + 2);
+		target.setCoins(target.getCoins() - 2);
+	}
+	
+	private void assassinate(Player target, Scanner input) {
+		setCoins(getCoins() - 3);
+		target.loseCard(input);
+	}
+	
+	private void coup(Player target, Scanner input) {
+		setCoins(getCoins() - 7);
+		target.loseCard(input);
+	}	
+	
+	Card[] getCardsForExchange(Deck deck) {
+		Card[] output = null;
+		
+		if (getCard1().isFaceDown() && getCard2().isFaceDown()) {
+			output = new Card[4];
+		} else {
+			output = new Card[3];
+		}
+		
+		if (getCard1().isFaceDown()) {
+			output[0] = getCard1();
+			if (getCard2().isFaceDown() ) {
+				output[1] = getCard2();
+			}
+		} else {
+			output[0] = getCard2();
+		}
+		
+		output[output.length - 2] = deck.deal();
+		output[output.length - 1] = deck.deal();
+		
+		return output;
+	}
+	
+	// TODO WRITE THIS METHOD
+	private void exchangeCards(Card[] cardsForExchange) {
+		
 	}
 	
 	// OVERRIDES
